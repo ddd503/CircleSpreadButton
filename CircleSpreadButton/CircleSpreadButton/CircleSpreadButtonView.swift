@@ -10,16 +10,17 @@ import UIKit
 
 class CircleSpreadButtonView: UIView {
 
-    let centerButtonInfo: CircleSpreadButtonInfo
-    var spreadButtonInfo = [CircleSpreadButtonInfo]()
+    private let centerButtonInfo: CircleSpreadButtonInfo
+    private var spreadButtonInfo = [CircleSpreadButtonInfo]()
 
-    init(origin: CGPoint = .zero, viewLength: CGFloat = 100, centerButtonInfo: CircleSpreadButtonInfo, spreadButtonInfo: [CircleSpreadButtonInfo]) {
+    private let spreadButtonSizeParcentage: CGFloat = 0.7
+    private var isOpen = false
+
+    init(origin: CGPoint = .zero, viewLength: CGFloat = 80, centerButtonInfo: CircleSpreadButtonInfo, spreadButtonInfo: [CircleSpreadButtonInfo]) {
         self.centerButtonInfo = centerButtonInfo
         self.spreadButtonInfo = spreadButtonInfo
         super.init(frame: CGRect(origin: origin, size: CGSize(width: viewLength, height: viewLength)))
         setupSpreadButton()
-//        self.layer.masksToBounds = true
-//        self.layer.cornerRadius = self.frame.width / 2
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -30,12 +31,12 @@ class CircleSpreadButtonView: UIView {
         spreadButtonInfo.enumerated().forEach { [weak self] (index, buttonInfo) in
             guard let self = self else { return }
             let spreadButton = UIButton(frame: CGRect(x: 0, y: 0,
-                                                width: self.frame.width * 0.8,
-                                                height: self.frame.height * 0.8))
+                                                width: self.frame.width * spreadButtonSizeParcentage,
+                                                height: self.frame.height * spreadButtonSizeParcentage))
             spreadButton.center = self.center
             spreadButton.backgroundColor = buttonInfo.color
             spreadButton.setTitle(buttonInfo.title, for: .normal)
-            spreadButton.tag = index
+            spreadButton.tag = index + 1
             // TODO: タップイベントの付与方法検討
             self.addSubview(spreadButton)
             spreadButton.layer.masksToBounds = true
@@ -49,30 +50,40 @@ class CircleSpreadButtonView: UIView {
         let centerButton = UIButton(frame: CGRect(origin: .zero, size: self.frame.size))
         centerButton.backgroundColor = centerButtonInfo.color
         centerButton.setTitle(centerButtonInfo.title, for: .normal)
-        centerButton.addTarget(self, action: #selector(spreadAnimation), for: UIControl.Event.touchUpInside)
+        centerButton.addTarget(self, action: #selector(spreadAnimation(sender:)), for: .touchUpInside)
         self.addSubview(centerButton)
         centerButton.layer.masksToBounds = true
         centerButton.layer.cornerRadius = centerButton.frame.width / 2
     }
 
-    @objc private func spreadAnimation() {
-        var buttonPairs = [(button: UIButton, center: CGPoint)]()
+    @objc private func spreadAnimation(sender: UIButton) {
+        sender.isEnabled = false
+
+        var buttonPairs = [(button: UIButton, transform: CGAffineTransform)]()
 
         spreadButtonInfo.enumerated().forEach { [weak self] (index, buttonInfo) in
-            guard let self = self,
-                let spreadButton = self.viewWithTag(index) as? UIButton else { return }
-            let center = self.circumferenceCoordinate(degree: Double(100 + (35 * index)), radius: self.frame.width / 2)
-            buttonPairs.append((spreadButton, center))
+            guard let self = self, let spreadButton = self.viewWithTag(index + 1) as? UIButton else {
+                sender.isEnabled = true
+                return
+            }
+            let center = self.isOpen ? .zero : self.circumferenceCoordinate(degree: Double(100 + (35 * index)), radius: self.frame.width * 1.3)
+            let transform = CGAffineTransform(translationX: center.x, y: center.y)
+            buttonPairs.append((spreadButton, transform))
         }
 
         let animator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.6) {
-            buttonPairs.forEach({ (button, center) in
-                button.center = center
+            buttonPairs.forEach({ [weak self] (button, transform) in
+                guard let self = self else {
+                    sender.isEnabled = true
+                    return
+                }
+                button.transform = self.isOpen ? .identity : transform
             })
         }
 
-        animator.addCompletion { _ in
-            print("アニメーション完了")
+        animator.addCompletion { [weak self] _ in
+            sender.isEnabled = true
+            self?.isOpen.toggle()
         }
 
         animator.startAnimation()

@@ -14,9 +14,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let info1 = CircleSpreadButtonInfo(color: .red, title: "赤")
         let info2 = CircleSpreadButtonInfo(color: .blue, title: "青")
+        let info3 = CircleSpreadButtonInfo(color: .brown, title: "茶")
         let centerInfo = CircleSpreadButtonInfo(color: .orange, title: "Tap")
 
-        let circleView = CircleSpreadButtonView(centerButtonInfo: centerInfo, spreadButtonInfo: [info1, info2])
+        let circleView = CircleSpreadButtonView(centerButtonInfo: centerInfo, spreadButtonInfo: [info1, info2, info3])
         circleView.center = self.view.center
         self.view.addSubview(circleView)
     }
