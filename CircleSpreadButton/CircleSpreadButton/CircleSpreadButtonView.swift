@@ -18,8 +18,8 @@ class CircleSpreadButtonView: UIView {
         self.spreadButtonInfo = spreadButtonInfo
         super.init(frame: CGRect(origin: origin, size: CGSize(width: viewLength, height: viewLength)))
         setupSpreadButton()
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = self.frame.width / 2
+//        self.layer.masksToBounds = true
+//        self.layer.cornerRadius = self.frame.width / 2
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -35,6 +35,7 @@ class CircleSpreadButtonView: UIView {
             spreadButton.center = self.center
             spreadButton.backgroundColor = buttonInfo.color
             spreadButton.setTitle(buttonInfo.title, for: .normal)
+            spreadButton.tag = index
             // TODO: タップイベントの付与方法検討
             self.addSubview(spreadButton)
             spreadButton.layer.masksToBounds = true
@@ -55,7 +56,26 @@ class CircleSpreadButtonView: UIView {
     }
 
     @objc private func spreadAnimation() {
-        print("tapped")
+        var buttonPairs = [(button: UIButton, center: CGPoint)]()
+
+        spreadButtonInfo.enumerated().forEach { [weak self] (index, buttonInfo) in
+            guard let self = self,
+                let spreadButton = self.viewWithTag(index) as? UIButton else { return }
+            let center = self.circumferenceCoordinate(degree: Double(100 + (35 * index)), radius: self.frame.width / 2)
+            buttonPairs.append((spreadButton, center))
+        }
+
+        let animator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.6) {
+            buttonPairs.forEach({ (button, center) in
+                button.center = center
+            })
+        }
+
+        animator.addCompletion { _ in
+            print("アニメーション完了")
+        }
+
+        animator.startAnimation()
     }
 
     private func circumferenceCoordinate(degree: Double, radius: CGFloat) -> CGPoint {
