@@ -12,6 +12,8 @@
 		45557F2822C3A7CA00952BC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45557F2622C3A7CA00952BC8 /* Main.storyboard */; };
 		45557F2A22C3A7CC00952BC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45557F2922C3A7CC00952BC8 /* Assets.xcassets */; };
 		45557F2D22C3A7CC00952BC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45557F2B22C3A7CC00952BC8 /* LaunchScreen.storyboard */; };
+		45557F3722C3A8CA00952BC8 /* CircleSpreadButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45557F3622C3A8CA00952BC8 /* CircleSpreadButtonView.swift */; };
+		45557F3922C3A8EB00952BC8 /* CircleSpreadButtonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45557F3822C3A8EB00952BC8 /* CircleSpreadButtonInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		45557F2922C3A7CC00952BC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45557F2C22C3A7CC00952BC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		45557F2E22C3A7CC00952BC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		45557F3622C3A8CA00952BC8 /* CircleSpreadButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleSpreadButtonView.swift; sourceTree = "<group>"; };
+		45557F3822C3A8EB00952BC8 /* CircleSpreadButtonInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleSpreadButtonInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,12 +58,30 @@
 		45557F2122C3A7CA00952BC8 /* CircleSpreadButton */ = {
 			isa = PBXGroup;
 			children = (
+				45557F3522C3A87400952BC8 /* CircleSpreadButton */,
+				45557F3422C3A87100952BC8 /* Others */,
+			);
+			path = CircleSpreadButton;
+			sourceTree = "<group>";
+		};
+		45557F3422C3A87100952BC8 /* Others */ = {
+			isa = PBXGroup;
+			children = (
 				45557F2222C3A7CA00952BC8 /* AppDelegate.swift */,
 				45557F2422C3A7CA00952BC8 /* ViewController.swift */,
 				45557F2622C3A7CA00952BC8 /* Main.storyboard */,
 				45557F2922C3A7CC00952BC8 /* Assets.xcassets */,
 				45557F2B22C3A7CC00952BC8 /* LaunchScreen.storyboard */,
 				45557F2E22C3A7CC00952BC8 /* Info.plist */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
+		45557F3522C3A87400952BC8 /* CircleSpreadButton */ = {
+			isa = PBXGroup;
+			children = (
+				45557F3622C3A8CA00952BC8 /* CircleSpreadButtonView.swift */,
+				45557F3822C3A8EB00952BC8 /* CircleSpreadButtonInfo.swift */,
 			);
 			path = CircleSpreadButton;
 			sourceTree = "<group>";
@@ -135,8 +157,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45557F3922C3A8EB00952BC8 /* CircleSpreadButtonInfo.swift in Sources */,
 				45557F2522C3A7CA00952BC8 /* ViewController.swift in Sources */,
 				45557F2322C3A7CA00952BC8 /* AppDelegate.swift in Sources */,
+				45557F3722C3A8CA00952BC8 /* CircleSpreadButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,7 +308,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LVR5UQEHBD;
-				INFOPLIST_FILE = CircleSpreadButton/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/CircleSpreadButton/Others/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +326,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LVR5UQEHBD;
-				INFOPLIST_FILE = CircleSpreadButton/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/CircleSpreadButton/Others/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
