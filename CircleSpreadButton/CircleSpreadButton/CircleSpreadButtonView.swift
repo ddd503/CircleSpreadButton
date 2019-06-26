@@ -71,14 +71,16 @@ class CircleSpreadButtonView: UIView {
             buttonPairs.append((spreadButton, transform))
         }
 
-        let animator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.6) {
-            buttonPairs.forEach({ [weak self] (button, transform) in
-                guard let self = self else {
-                    sender.isEnabled = true
-                    return
-                }
-                button.transform = self.isOpen ? .identity : transform
-            })
+        let animator = self.isOpen ?
+            UIViewPropertyAnimator(duration: 0.1, curve: .linear) {
+                buttonPairs.forEach({ (button, _) in
+                    button.transform = .identity
+                })
+            } :
+            UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5) {
+                buttonPairs.forEach({ (button, transform) in
+                    button.transform = transform
+                })
         }
 
         animator.addCompletion { [weak self] _ in

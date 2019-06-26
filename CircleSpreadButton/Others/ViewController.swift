@@ -18,8 +18,9 @@ class ViewController: UIViewController {
         let centerInfo = CircleSpreadButtonInfo(color: .orange, title: "Tap")
 
         let circleView = CircleSpreadButtonView(centerButtonInfo: centerInfo, spreadButtonInfo: [info1, info2, info3])
-        circleView.center = self.view.center
-        self.view.addSubview(circleView)
+        circleView.center.x = view.center.x * 1.7
+        circleView.center.y = view.center.y * 1.7
+        view.addSubview(circleView)
     }
 
 }
