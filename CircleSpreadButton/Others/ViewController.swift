@@ -12,14 +12,27 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let info1 = CircleSpreadButtonInfo(color: .red, title: "赤")
-        let info2 = CircleSpreadButtonInfo(color: .blue, title: "青")
-        let info3 = CircleSpreadButtonInfo(color: .brown, title: "茶")
-        let centerInfo = CircleSpreadButtonInfo(color: .orange, title: "Tap")
 
-        let circleView = CircleSpreadButtonView(centerButtonInfo: centerInfo, spreadButtonInfo: [info1, info2, info3])
-        circleView.center.x = view.center.x * 1.7
-        circleView.center.y = view.center.y * 1.7
+        let spreadButtonInfo1 = SpreadButtonInfo(color: .red, title: "赤", task: {
+            print("red")
+        })
+
+        let spreadButtonInfo2 = SpreadButtonInfo(color: .blue, title: "青", task: {
+            print("blue")
+        })
+
+        let spreadButtonInfo3 = SpreadButtonInfo(color: .brown, title: "茶", task: {
+            print("brown")
+        })
+
+        let centerButtonInfo = CenterButtonInfo(color: .gray, title: "Tap")
+
+        let circleView = CircleSpreadButtonView(parentView: view,
+                                                center: CGPoint(x: view.center.x * 1.7, y: view.center.y * 1.7),
+                                                centerButtonInfo: centerButtonInfo,
+                                                spreadButtonInfo: [spreadButtonInfo1,
+                                                                   spreadButtonInfo2,
+                                                                   spreadButtonInfo3])
         view.addSubview(circleView)
     }
 

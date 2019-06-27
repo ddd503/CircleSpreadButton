@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct CircleSpreadButtonInfo {
+struct CenterButtonInfo {
     let color: UIColor
     let title: String
 
@@ -18,3 +18,14 @@ struct CircleSpreadButtonInfo {
     }
 }
 
+struct SpreadButtonInfo {
+    let color: UIColor
+    let title: String
+    let task: () -> ()
+
+    init(color: UIColor = .white, title: String = "", task: @escaping () -> ()) {
+        self.color = color
+        self.title = title
+        self.task = task
+    }
+}
