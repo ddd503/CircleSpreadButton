@@ -9,27 +9,31 @@
 import UIKit
 
 struct CenterButtonInfo {
-    let color: UIColor
     let title: String
+    let backgroundColor: UIColor
     let backgroundImage: UIImage?
+    let type: CircleSpreadButtonType?
 
-    init(color: UIColor = .white, title: String = "", backgroundImage: UIImage? = nil) {
-        self.color = color
+    init(title: String = "", backgroundColor: UIColor = .white, backgroundImage: UIImage? = nil, type: CircleSpreadButtonType? = nil) {
         self.title = title
+        self.backgroundColor = backgroundColor
         self.backgroundImage = backgroundImage
+        self.type = type
     }
 }
 
 struct SpreadButtonInfo {
-    let color: UIColor
     let title: String
+    let backgroundColor: UIColor
     let backgroundImage: UIImage?
+    let type: CircleSpreadButtonType?
     let task: () -> ()
 
-    init(color: UIColor = .white, title: String = "", backgroundImage: UIImage? = nil, task: @escaping () -> ()) {
-        self.color = color
+    init(title: String = "", backgroundColor: UIColor = .white, backgroundImage: UIImage? = nil, type: CircleSpreadButtonType? = nil, task: @escaping () -> ()) {
         self.title = title
+        self.backgroundColor = backgroundColor
         self.backgroundImage = backgroundImage
+        self.type = type
         self.task = task
     }
 }

@@ -13,22 +13,22 @@ class CircleSpreadButtonView: UIView {
     private let origin: CGPoint
     private let viewSize: CGSize
     private let centerButtonInfo: CenterButtonInfo
-    private let spreadButtonInfo: [SpreadButtonInfo]
+    private let spreadButtonInfoArray: [SpreadButtonInfo]
     private let firstSpreadButtonCenterAngle: Double
     private let spreadButtonAngleInterval: Double
 
     // Private
-    private let spreadViewSizeParcentage: CGFloat = 3.0
+    private let spreadViewSizeParcentage: CGFloat = 3.5
     private let spreadButtonSizeParcentage: CGFloat = 0.7
     private (set) var isOpen = false
 
     init(origin: CGPoint, length: CGFloat = 80,
          firstSpreadButtonCenterAngle: Double = 100, spreadButtonAngleInterval: Double = 40,
-         centerButtonInfo: CenterButtonInfo, spreadButtonInfo: [SpreadButtonInfo]) {
+         centerButtonInfo: CenterButtonInfo, spreadButtonInfoArray: [SpreadButtonInfo]) {
         self.origin = origin
         viewSize = CGSize(width: length, height: length)
         self.centerButtonInfo = centerButtonInfo
-        self.spreadButtonInfo = spreadButtonInfo
+        self.spreadButtonInfoArray = spreadButtonInfoArray
         self.firstSpreadButtonCenterAngle = firstSpreadButtonCenterAngle
         self.spreadButtonAngleInterval = spreadButtonAngleInterval
         super.init(frame: CGRect(origin: origin, size: viewSize))
@@ -43,25 +43,29 @@ class CircleSpreadButtonView: UIView {
 
     func setupCenterButton() {
         let centerButton = UIButton(frame: CGRect(origin: .zero, size: viewSize))
-        centerButton.setBackgroundImage(centerButtonInfo.backgroundImage, for: .normal)
-        centerButton.backgroundColor = centerButtonInfo.color
+        centerButton.setBackgroundImage(centerButtonInfo.type?.backgroundImage ?? centerButtonInfo.backgroundImage,
+                                        for: .normal)
+        centerButton.backgroundColor = centerButtonInfo.type?.backgroundColor ?? centerButtonInfo.backgroundColor
+        centerButton.setTitle(centerButtonInfo.type?.title ?? centerButtonInfo.title, for: .normal)
         centerButton.setTitleColor(.white, for: .normal)
         centerButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
+        centerButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         centerButton.addTarget(self, action: #selector(centerButtonAction(sender:)), for: .touchUpInside)
         addSubview(centerButton)
         roundCorner(view: centerButton)
     }
 
     func setupSpreadButton() {
-        spreadButtonInfo.enumerated().forEach { [weak self] (index, buttonInfo) in
+        spreadButtonInfoArray.enumerated().forEach { [weak self] (index, spreadButtonInfo) in
             guard let self = self else { return }
             let spreadButton = UIButton(frame: CGRect(origin: .zero,
                                                       size: CGSize(width: self.viewSize.width * self.spreadButtonSizeParcentage,
                                                                    height: self.viewSize.height * self.spreadButtonSizeParcentage)))
-            spreadButton.setBackgroundImage(buttonInfo.backgroundImage, for: .normal)
+            spreadButton.setBackgroundImage(spreadButtonInfo.type?.backgroundImage ?? spreadButtonInfo.backgroundImage,
+                                            for: .normal)
             spreadButton.center = self.roundViewCenter(length: self.viewSize.width)
-            spreadButton.backgroundColor = buttonInfo.color
-            spreadButton.setTitle(buttonInfo.title, for: .normal)
+            spreadButton.backgroundColor = spreadButtonInfo.type?.backgroundColor ?? spreadButtonInfo.backgroundColor
+            spreadButton.setTitle(spreadButtonInfo.type?.title ?? spreadButtonInfo.title, for: .normal)
             spreadButton.setTitleColor(.white, for: .normal)
             spreadButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
             spreadButton.titleLabel?.lineBreakMode = .byTruncatingTail
@@ -82,7 +86,7 @@ class CircleSpreadButtonView: UIView {
         let centerButtonCenter = CGPoint(x: spreadViewSize.width / 2, y: spreadViewSize.height / 2)
         let spreadViewCenterAfterTransform = self.roundViewCenter(length: spreadViewSize.width)
 
-        spreadButtonInfo.enumerated().forEach { [weak self] (index, buttonInfo) in
+        spreadButtonInfoArray.enumerated().forEach { [weak self] (index, _) in
             guard let self = self, let spreadButton = self.viewWithTag(index + 1) as? UIButton else {
                 sender.isEnabled = true
                 return
@@ -124,8 +128,8 @@ class CircleSpreadButtonView: UIView {
     }
 
     @objc func spreadButtonAction(sender: UIButton) {
-        guard spreadButtonInfo.count >= sender.tag else { return }
-        spreadButtonInfo[sender.tag - 1].task()
+        guard spreadButtonInfoArray.count >= sender.tag else { return }
+        spreadButtonInfoArray[sender.tag - 1].task()
     }
 
     func roundCorner(view: UIView, length: CGFloat? = nil) {
