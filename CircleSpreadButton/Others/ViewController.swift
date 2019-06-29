@@ -25,13 +25,17 @@ class ViewController: UIViewController {
             print("brown")
         })
 
-        let centerButtonInfo = CenterButtonInfo(color: .gray, title: "Tap")
+        let spreadButtonInfo4 = SpreadButtonInfo(color: .magenta, title: "マゼンタ", backgroundImage: UIImage(named: "camera"), task: {
+            print("マゼンタ")
+        })
+
+        let centerButtonInfo = CenterButtonInfo(color: .gray, title: "Tap", backgroundImage: UIImage(named: "camera"))
 
         let length: CGFloat = 80
         let origin = CGPoint(x: (view.frame.width / 2) - (length / 2), y: view.frame.height / 2 - (length / 2))
         let circleSpreadButtonView = CircleSpreadButtonView(origin: origin, length: length,
                                                             centerButtonInfo: centerButtonInfo,
-                                                            spreadButtonInfo: [spreadButtonInfo1, spreadButtonInfo2, spreadButtonInfo3])
+                                                            spreadButtonInfo: [spreadButtonInfo1, spreadButtonInfo2, spreadButtonInfo3, spreadButtonInfo4])
         view.addSubview(circleSpreadButtonView)
     }
 

@@ -11,21 +11,25 @@ import UIKit
 struct CenterButtonInfo {
     let color: UIColor
     let title: String
+    let backgroundImage: UIImage?
 
-    init(color: UIColor = .white, title: String = "") {
+    init(color: UIColor = .white, title: String = "", backgroundImage: UIImage? = nil) {
         self.color = color
         self.title = title
+        self.backgroundImage = backgroundImage
     }
 }
 
 struct SpreadButtonInfo {
     let color: UIColor
     let title: String
+    let backgroundImage: UIImage?
     let task: () -> ()
 
-    init(color: UIColor = .white, title: String = "", task: @escaping () -> ()) {
+    init(color: UIColor = .white, title: String = "", backgroundImage: UIImage? = nil, task: @escaping () -> ()) {
         self.color = color
         self.title = title
+        self.backgroundImage = backgroundImage
         self.task = task
     }
 }

@@ -42,11 +42,14 @@ class CircleSpreadButtonView: UIView {
     }
 
     func setupCenterButton() {
-        let button = UIButton(frame: CGRect(origin: .zero, size: viewSize))
-        button.backgroundColor = .blue
-        button.addTarget(self, action: #selector(centerButtonAction(sender:)), for: .touchUpInside)
-        addSubview(button)
-        roundCorner(view: button)
+        let centerButton = UIButton(frame: CGRect(origin: .zero, size: viewSize))
+        centerButton.setBackgroundImage(centerButtonInfo.backgroundImage, for: .normal)
+        centerButton.backgroundColor = centerButtonInfo.color
+        centerButton.setTitleColor(.white, for: .normal)
+        centerButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
+        centerButton.addTarget(self, action: #selector(centerButtonAction(sender:)), for: .touchUpInside)
+        addSubview(centerButton)
+        roundCorner(view: centerButton)
     }
 
     func setupSpreadButton() {
@@ -55,9 +58,13 @@ class CircleSpreadButtonView: UIView {
             let spreadButton = UIButton(frame: CGRect(origin: .zero,
                                                       size: CGSize(width: self.viewSize.width * self.spreadButtonSizeParcentage,
                                                                    height: self.viewSize.height * self.spreadButtonSizeParcentage)))
+            spreadButton.setBackgroundImage(buttonInfo.backgroundImage, for: .normal)
             spreadButton.center = self.roundViewCenter(length: self.viewSize.width)
             spreadButton.backgroundColor = buttonInfo.color
             spreadButton.setTitle(buttonInfo.title, for: .normal)
+            spreadButton.setTitleColor(.white, for: .normal)
+            spreadButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
+            spreadButton.titleLabel?.lineBreakMode = .byTruncatingTail
             spreadButton.tag = index + 1
             spreadButton.addTarget(self, action: #selector(spreadButtonAction(sender:)), for: .touchUpInside)
             self.addSubview(spreadButton)
