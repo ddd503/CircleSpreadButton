@@ -41,7 +41,7 @@ class CircleSpreadButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupCenterButton() {
+    private func setupCenterButton() {
         let centerButton = UIButton(frame: CGRect(origin: .zero, size: viewSize))
         centerButton.setBackgroundImage(centerButtonInfo.type?.backgroundImage ?? centerButtonInfo.backgroundImage,
                                         for: .normal)
@@ -49,13 +49,13 @@ class CircleSpreadButtonView: UIView {
         centerButton.setTitle(centerButtonInfo.type?.title ?? centerButtonInfo.title, for: .normal)
         centerButton.setTitleColor(.white, for: .normal)
         centerButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
-        centerButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        centerButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         centerButton.addTarget(self, action: #selector(centerButtonAction(sender:)), for: .touchUpInside)
         addSubview(centerButton)
         roundCorner(view: centerButton)
     }
 
-    func setupSpreadButton() {
+    private func setupSpreadButton() {
         spreadButtonInfoArray.enumerated().forEach { [weak self] (index, spreadButtonInfo) in
             guard let self = self else { return }
             let spreadButton = UIButton(frame: CGRect(origin: .zero,
@@ -76,7 +76,7 @@ class CircleSpreadButtonView: UIView {
         }
     }
 
-    @objc func centerButtonAction(sender: UIButton) {
+    @objc private func centerButtonAction(sender: UIButton) {
         sender.isEnabled = false
 
         var buttonPairs = [(button: UIButton, center: CGPoint)]()
@@ -127,21 +127,36 @@ class CircleSpreadButtonView: UIView {
         animator.startAnimation()
     }
 
-    @objc func spreadButtonAction(sender: UIButton) {
+    @objc private func spreadButtonAction(sender: UIButton) {
         guard spreadButtonInfoArray.count >= sender.tag else { return }
+        scalingAnimation(view: sender)
         spreadButtonInfoArray[sender.tag - 1].task()
     }
 
-    func roundCorner(view: UIView, length: CGFloat? = nil) {
+    private func scalingAnimation(view: UIView) {
+        let transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+
+        let animator = UIViewPropertyAnimator(duration: 0.2, curve: .linear) {
+            view.transform = transform
+        }
+
+        animator.addAnimations({
+            view.transform = .identity
+        }, delayFactor: 0.5)
+
+        animator.startAnimation()
+    }
+
+    private func roundCorner(view: UIView, length: CGFloat? = nil) {
         view.layer.masksToBounds = true
         view.layer.cornerRadius = (length ?? view.frame.width) / 2
     }
 
-    func roundViewCenter(length: CGFloat) -> CGPoint {
+    private func roundViewCenter(length: CGFloat) -> CGPoint {
         return CGPoint(x: length / 2, y: length / 2)
     }
 
-    func circumferenceCoordinate(degree: Double, radius: CGFloat) -> CGPoint {
+    private func circumferenceCoordinate(degree: Double, radius: CGFloat) -> CGPoint {
         let θ = Double.pi / Double(-180) * Double(degree)
         let x = Double(radius) * cos(θ)
         let y = Double(radius) * sin(θ)

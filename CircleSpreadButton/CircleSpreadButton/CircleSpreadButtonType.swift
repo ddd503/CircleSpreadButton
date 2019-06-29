@@ -18,7 +18,7 @@ enum CircleSpreadButtonType {
     }
 
     var backgroundColor: UIColor {
-        return .darkGray
+        return .black
     }
 
     var backgroundImage: UIImage {
